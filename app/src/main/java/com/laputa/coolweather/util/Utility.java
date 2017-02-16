@@ -1,6 +1,7 @@
 package com.laputa.coolweather.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.laputa.coolweather.db.City;
 import com.laputa.coolweather.db.County;
@@ -9,6 +10,8 @@ import com.laputa.coolweather.db.Province;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by asus on 2017/2/15.
@@ -19,6 +22,7 @@ public class Utility {
     解析和处理服务器返回的省级数据
     */
     public static boolean handleProvinceResponse(String response) {
+        Log.d("CoolWeather","handleProvinceResponse()");
         if (!TextUtils.isEmpty(response)) {
             try {
                 JSONArray allProvinces = new JSONArray(response);
@@ -27,6 +31,7 @@ public class Utility {
                     Province province = new Province();
                     province.setProvinceName(provinceObject.getString("name"));
                     province.setProvinceCode(provinceObject.getInt("id"));
+                    province.save();
                 }
                 return true;
             } catch (JSONException e) {

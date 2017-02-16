@@ -3,6 +3,7 @@ package com.laputa.coolweather;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class ChooseAreaFragment extends Fragment{
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d("CoolWeather","onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -93,6 +95,7 @@ public class ChooseAreaFragment extends Fragment{
     }
 
     private void queryProvinces() {
+        Log.d("CoolWeather","queryProvinces()");
         titleText.setText("中国");
         backButton.setVisibility(View.GONE);
         provinceList = DataSupport.findAll(Province.class);
@@ -150,10 +153,12 @@ public class ChooseAreaFragment extends Fragment{
     }
 
     private void queryFromServer(String address, final String type) {
-        showProgressDialog();
+        Log.d("CoolWeather","queryFromServer()");
+        showProgressDialog(); //显示对话框
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Log.d("CoolWeather","onResponse()");
                 String responseText = response.body().string();
                 boolean result = false;
                 if ("province".equals(type)){
@@ -164,6 +169,7 @@ public class ChooseAreaFragment extends Fragment{
                     result = Utility.handleCountyResponse(responseText,selectedCity.getId());
                 }
                 if (result){
+                    Log.d("CoolWeather","result return true");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -182,6 +188,7 @@ public class ChooseAreaFragment extends Fragment{
 
             @Override
             public void onFailure(Call call, IOException e) {
+                Log.d("CoolWeather","onFailure()");
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
